@@ -2,12 +2,15 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
+import { ApolloProvider } from '@apollo/client'
+import client from '../apollo-client'
+import Header from '../components/Header'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
-      <Head>
 
+      <Head>
         <title>Doge</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -23,11 +26,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="distribution" content="global" />
         <meta name="rating" content="general" />
         <meta name="document-class" content="Published" />
-
       </Head>
-      <SessionProvider>
-        <Component {...pageProps} />
-      </SessionProvider>
+
+      <ApolloProvider client={client}>
+        <SessionProvider session={session}>
+          <div className="h-screen overflow-x-hidden overflow-y-scroll bg-slate-200">
+            <Header />
+            <Component {...pageProps} />
+          </div>
+        </SessionProvider>
+      </ApolloProvider>
     </>
   )
 }

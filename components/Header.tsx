@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/Image';
+import {signIn} from 'next-auth/react'
 import { FaHome } from 'react-icons/fa';
 import { VscChevronDown } from 'react-icons/vsc'
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai'
@@ -35,7 +36,7 @@ const Header = () => {
                     <AiOutlineMenu className="icon" />
                 </div>
 
-                <div className="hidden cursor-pointer items-center space-x-2 mr-2 lg:flex">
+                <div onClick={() => signIn()} className="hidden cursor-pointer items-center space-x-2 mr-2 lg:flex">
                     <div className="h-9 relative w-9 flex-shrink-0">
                         <Image className="object-contain" layout='fill' src="https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=022" alt="doge" />
                     </div>

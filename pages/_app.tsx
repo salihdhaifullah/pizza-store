@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <Head>
         <title>Doge</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="A simple example of a Next.js App" />
         <meta name="keywords" content="doge, elon musk twit, doge, elon musk, twitter, doge love twitter" />
         <meta name="author" content="salih hassan" />
@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
-          <div className="h-screen overflow-x-hidden overflow-y-scroll bg-slate-200">
+          <div className="h-screen overflow-x-scroll overflow-y-scroll bg-slate-200">
             <Header />
             <Component {...pageProps} />
           </div>

@@ -23,6 +23,8 @@ const Post = () => {
         image: null
     });
 
+    const { title, body, image } = form;
+
     // useEffect(() => {
     //     const tags = form.title.split(/(#[a-z\d-]+)/)
     //     const tagsArray = tags.filter(tag => tag.startsWith('#'))
@@ -34,7 +36,7 @@ const Post = () => {
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         if (session) {
             e.preventDefault();
-            const { title, body, image } = form;
+
             if (image && title && body) {
                 console.log(image);
                 const { data, error } = await supabase.storage.from("images").upload(`${session?.user?.name}/${v4()}`, image)
@@ -47,19 +49,27 @@ const Post = () => {
         }
     };
 
+    const clear = () => {
+        setForm({
+            title: '',
+            body: '',
+            image: null
+        })
+    }
 
 
     return (
         <form onSubmit={(e) => onSubmit(e)} className="rounded-md p-4  top-16 z-50 sticky border border-gray-300 bg-slate-100 shadow-md">
             <div className="flex items-center space-x-3 ">
                 <label className="sr-only" htmlFor="title">Title:{" "}</label>
-                <Avatar />
+                <Avatar shadow />
 
                 <input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, title: e.target.value })}
                     disabled={!session}
-                    className="p-2 pl-5 flex flex-1 rounded-md outline-none bg-gray-50"
+                    className="p-2 pl-5 focus:border shadow-md border-blue-600 flex flex-1 rounded-md outline-none bg-gray-50"
                     type="text"
+                    value={form.title}
                     id="title"
                     placeholder={`${session
                         ? "Create a title for your post"
@@ -67,40 +77,13 @@ const Post = () => {
                     `} />
 
                 <div className='relative group w-fit flex'>
-                    <BsLink45Deg className="icon group" />
-                    <div className="absolute bg-white group-hover:flex min-w-30 text-center transition-all shadow-md hidden rounded-md top-[-25px] right-[35px] p-1 z-[400]">
-                        <p className="text-gray-700 text-sm">add tags</p>
-                    </div>
-                </div>
 
-                <div className='relative group w-fit flex'>
-                    <IoImagesOutline className="icon group" />
-                    <div className="absolute bg-white group-hover:flex min-w-30 text-center transition-all shadow-md hidden rounded-md top-[-25px] right-[-65px] p-1 z-[400]">
-                        <p className="text-gray-700 text-sm">upload image</p>
-                    </div>
-                </div>
-
-            </div>
-            {form.title && (
-                <>
-                    <div className="flex items-center space-x-3 mt-4 ">
-                        <label htmlFor="post" className="text-gray-700 mr-4  text-lg font-bold">Post:{" "}</label>
-                        <div className="flex items-center space-x-3 flex-1">
-                            <textarea id="post"
-                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({ ...form, body: e.target.value })}
-                                className="min-h-[40vh] max-h-[40vh] p-2 pl-5 flex flex-1 outline-none bg-gray-50  border-0  w-full text-gray-900 rounded-md"
-                                placeholder="Create your Post body">
-                            </textarea>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3 mb-4 ">
-                        <label htmlFor="image" className="text-gray-700 mr-4  text-lg font-bold">Post:{" "}</label>
-
+                    <label htmlFor="image" className="">
+                        <IoImagesOutline className={`icon ${image && "text-blue-500"} group  `} />
                         <input
                             onChange={(e: ChangeEvent<HTMLInputElement>) => { setForm({ ...form, image: e.currentTarget.files![0] }) }}
                             disabled={!session}
-                            className="p-2 pl-5 flex flex-1 rounded-md outline-none bg-gray-50"
+                            className="w-0 h-0 z-[0] opacity-0 border-0 absolute"
                             type="file"
                             ref={FileRef}
                             accept="image/*"
@@ -108,12 +91,44 @@ const Post = () => {
                             placeholder={`${session
                                 ? "upload an image for your post"
                                 : "Sing in to create a post"}
-                        `} />
+                                    `} /> </label>
+
+                    <div className="absolute bg-white group-hover:flex text-center transition-all shadow-md hidden rounded-md top-[-45px] right-[30px] p-1 z-[400]">
+                        <p className="text-gray-700 text-sm p-1 w-[50px] h-[50px]">{image ? "upload success" : "Upload image"}</p>
+                    </div>
+                </div>
+
+                <div className='relative group w-fit flex'>
+                    <BsLink45Deg className="icon group  " />
+                    <div className="absolute bg-white group-hover:flex text-center transition-all shadow-md hidden rounded-md top-[-45px] right-[30px] p-1 z-[400]">
+                        <p className="text-gray-700 text-sm p-1 w-[50px] h-[50px]">Add tags</p>
+                    </div>
+                </div>
+
+            </div>
+            {form.title && (
+                <>
+                    <div className="flex items-center mt-4 px-8 ">
+                        <label htmlFor="post" className="sr-only">Post</label>
+                        <div className="flex items-center justify-center flex-1">
+                            <textarea id="post"
+                                value={form.body}
+                                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({ ...form, body: e.target.value })}
+                                className="min-h-[40vh] focus:border border-blue-600 shadow-md p-2 flex flex-1 outline-none bg-gray-50  border-0 text-gray-900 rounded-md"
+                                placeholder="Create your Post body">
+                            </textarea>
+                        </div>
                     </div>
 
-                    <button className="flex justify-center items-center w-full p-2.5 text-sm text-white bg-blue-500 rounded-md" type="submit">
-                        {session ? "Create Post" : "Sing in to create a post"}
-                    </button>
+                    <div className='grid grid-cols-2 gap-4 w-full px-8 py-2.5 text-lg'>
+                        <button className=" text-white shadow-md bg-blue-500  p-[6px] rounded-md" type="submit">
+                            {session ? "Create Post" : "Sing in to create a post"}
+                        </button>
+
+                        <button onClick={clear} className=" p-[6px] shadow-md text-gray-900 bg-gray-400 rounded-md" type="button">
+                            Clear post
+                        </button>
+                    </div>
                 </>
             )}
 

@@ -3,6 +3,7 @@ import { signIn, useSession, signOut } from 'next-auth/react'
 import { FaHome } from 'react-icons/fa';
 import { VscChevronDown } from 'react-icons/vsc'
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai'
+import Avatar from './Avatar';
 
 const Header = () => {
     const { data: session } = useSession()
@@ -39,10 +40,7 @@ const Header = () => {
 
                 {session ? (
                     <li className="hidden items-center space-x-2 lg:flex">
-                        <div className="h-9 relative w-9 flex-shrink-0 ">
-                            <Image className="object-contain rounded-full" layout='fill' src={session?.user?.image || "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=022"} alt="doge" />
-                        </div>
-
+                        <Avatar />
                         <div className="flex-1 text-xs">
                             <p>{session?.user?.name}</p>
                             <p onClick={() => signOut()} className='text-gray-400 cursor-pointer hidden lg:flex'>Sign Out</p>

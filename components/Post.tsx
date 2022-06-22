@@ -2,36 +2,55 @@ import { useSession } from 'next-auth/react';
 import Avatar from './Avatar';
 import { IoImagesOutline } from 'react-icons/io5'
 import { BsLink45Deg } from 'react-icons/bs'
-import { useForm } from 'react-hook-form'
+import supabase from '../lib/supabaseClient';
+import {v4} from 'uuid';
+import { ChangeEvent, FormEvent, MutableRefObject, useRef, useState } from 'react';
 
 interface FormData {
     title: string
     body: string
-    image: string
+    image: File | null
 }
 
 const Post = () => {
     const { data: session } = useSession();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
-    const onSubmit = (data: FormData) => console.log(data);
-    console.log(watch());
+    const FileRef = useRef<HTMLInputElement | null>(null)
+
+
+    const [form, setForm] = useState<FormData>({
+        title: '',
+        body: '',
+        image: null
+    });
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        if (session) {
+            e.preventDefault();
+            const { title, body, image } = form;
+            if (image && title && body) {
+                console.log(image);
+                const { data, error } = await supabase.storage.from("images").upload(`${session?.user?.name}/${v4()}`, image)
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(data);
+                }
+            }
+        }
+    };
+
+
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="rounded-md  top-16 z-50 sticky border border-gray-300 bg-slate-100 shadow-md p-2">
-            <label className="sr-only" htmlFor="title">Title</label>
-            {errors.title?.message && (
-                <label className="flex flex-1 justify-center items-center flex-col w-full text-red-600" htmlFor="title">{errors.title?.message}</label>
-            )}
+        <form onSubmit={(e) => onSubmit(e)} className="rounded-md  top-16 z-50 sticky border border-gray-300 bg-slate-100 shadow-md p-2">
+            {/* {true && (
+                <label className="flex flex-1 justify-center items-center flex-col w-full text-red-600" htmlFor="title">{true}</label>
+            )} */}
             <div className="flex items-center space-x-3">
-                <Avatar />
+                <label className="text-gray-700 text-lg font-bold" htmlFor="title">Title:{" "}</label>
 
                 <input
-                    {...register('title', {
-                        required: "this filed is required", minLength: {
-                            value: 3,
-                            message: "Min length is 3 chares"
-                        }
-                    })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, title: e.target.value })}
                     disabled={!session}
                     className="p-2 pl-5 flex flex-1 rounded-md outline-none bg-gray-50"
                     type="text"
@@ -40,35 +59,43 @@ const Post = () => {
                         ? "Create a title for your post"
                         : "Sing in to create a post"}
                     `} />
-                <IoImagesOutline className="icon" />
-                <BsLink45Deg className="icon" />
+
+                {/* <IoImagesOutline className="icon" />
+                <BsLink45Deg className="icon" /> */}
+
             </div>
 
-            {watch("title") && (
-                <div className="min-w-full justify-center items-center flex fledx-1">
-                    <label className="sr-only" htmlFor="body">body</label>
-
-                    {errors.body?.message && (
-                        <label className="flex flex-1 justify-center items-center flex-col w-full text-red-600" htmlFor="title">{errors.title?.message}</label>
-                    )}
-
-                    <input
-                        {...register('body', {
-                            required: "this filed is required", minLength: {
-                                value: 10,
-                                message: "Min length is 10 chares"
-                            }
-                        })}
-                        disabled={!session}
-                        className="p-2 pl-5 flex flex-1 rounded-md outline-none bg-gray-50"
-                        type="text"
-                        id="body"
-                        placeholder={`${session
-                            ? "Create a body for your post"
-                            : "Sing in to create a post"}
-                    `} />
+            <div className="min-w-full flex flex-1">
+                <label htmlFor="post" className="text-gray-700 mr-4  text-lg font-bold">Post:{" "}</label>
+                <div className="flex items-center space-x-3 flex-1">
+                    <textarea id="post"
+                        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({ ...form, body: e.target.value })}
+                        className="min-h-[40vh] max-h-[40vh] flex outline-none border-0 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg"
+                        placeholder="Create your Post body">
+                    </textarea>
                 </div>
-            )}
+            </div>
+
+            <div className="min-w-full justify-center items-center flex flex-1">
+                <label htmlFor="image" className="text-gray-700 mr-4  text-lg font-bold">Post:{" "}</label>
+
+                <input
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => { setForm({ ...form, image: e.currentTarget.files![0] }) }}
+                    disabled={!session}
+                    className="p-2 pl-5 flex flex-1 rounded-md outline-none bg-gray-50"
+                    type="file"
+                    ref={FileRef}
+                    accept="image/*"
+                    id="image"
+                    placeholder={`${session
+                        ? "upload an image for your post"
+                        : "Sing in to create a post"}
+                `} />
+            </div>
+
+            <button className="flex justify-center items-center w-full p-2.5 text-sm text-white bg-blue-500 rounded-md" type="submit">
+                {session ? "Create Post" : "Sing in to create a post"}
+            </button>
         </form>
     )
 }

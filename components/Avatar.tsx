@@ -12,8 +12,8 @@ const Avatar = ({seed, large}: Props) => {
         <div className={`overflow-hidden relative h-10 w-10 rounded-full border-gary-300 border bg-white ${large && "w-20 h-20"}`}>
             <Image
                 layout='fill'
-                src={`https://avatars.dicebear.com/api/avataaars/${seed || session?.user?.name || "hello moms"}.svg`}
-                alt="doge" />
+                src={`https://avatars.dicebear.com/api/gridy/${seed || session?.user?.name || "hello moms"}.svg`}
+                alt="Avatar" />
         </div>
     )
 }

@@ -1,49 +1,86 @@
 import { useSession } from 'next-auth/react';
 import Avatar from './Avatar';
 import { IoImagesOutline } from 'react-icons/io5'
+import { AiOutlineClose } from 'react-icons/ai'
 import { BsLink45Deg } from 'react-icons/bs'
 import supabase from '../lib/supabaseClient';
 import { v4 } from 'uuid';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { INSERT_POST } from '../graphql/mutations';
 
 interface FormData {
     title: string
     body: string
-    image: File | null
+    image: File | null,
+    tags: string
 }
 
 const Post = () => {
     const { data: session } = useSession();
     const FileRef = useRef<HTMLInputElement | null>(null)
+    const [haveTags, setHaveTags] = useState(false)
+    const [tagsArray, setTagsArray] = useState<string[]>([])
+    const [post] = useMutation(INSERT_POST)
 
 
     const [form, setForm] = useState<FormData>({
         title: '',
         body: '',
-        image: null
+        image: null,
+        tags: ''
     });
 
     const { title, body, image } = form;
 
-    // useEffect(() => {
-    //     const tags = form.title.split(/(#[a-z\d-]+)/)
-    //     const tagsArray = tags.filter(tag => tag.startsWith('#'))
-
-    //     console.log(tagsArray);
-    // }, [form.title])
+    useEffect(() => {
+        const tags = form.tags.split(' ').filter(tag => tag.length > 0)
+    }, [form.tags])
 
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        // if (haveTags && form.tags.length > 0) {
+        //     setTagsArray(form.tags.split(' ').filter(tag => tag.length > 0))
+        // }
+
         if (session) {
             e.preventDefault();
-
             if (image && title && body) {
-                console.log(image);
-                const { data, error } = await supabase.storage.from("images").upload(`${session?.user?.name}/${v4()}`, image)
-                if (error) {
-                    throw new Error(error.message)
-                } else {
-                    console.log(data);
+                const baseImageUrl = 'https://myfemqoikddiauxrrwoj.supabase.co/storage/v1/object/public/images'
+                const imageUrl = `${session.user?.name}/${v4()}`
+                try {
+                    await supabase.storage.from("images").upload(imageUrl, image)
+                    await post({
+                        variables: {
+                            title,
+                            body,
+                            image: baseImageUrl + '/' + imageUrl,
+                            tags: tagsArray,
+                            userName: session.user?.name,
+                        }
+                    })
+                    console.log('success');
+                }
+                catch (error: any) {
+                    console.log(error);
+                    throw new Error(error)
+                }
+                return;
+            }
+            if (title && body) {
+                try {
+                    await post({
+                        variables: {
+                            title,
+                            body,
+                            image: null,
+                            tags: tagsArray,
+                            userName: session.user?.name,
+                        }
+                    })
+                    console.log('success');
+                } catch (error: any) {
+                    console.log(error);
                 }
             }
         }
@@ -53,13 +90,14 @@ const Post = () => {
         setForm({
             title: '',
             body: '',
-            image: null
+            image: null,
+            tags: ''
         })
     }
 
 
     return (
-        <form onSubmit={(e) => onSubmit(e)} className="rounded-md p-4  top-16 z-50 sticky border border-gray-300 bg-slate-100 shadow-md">
+        <form onSubmit={(e) => onSubmit(e)} className="rounded-md p-4 top-16 z-50 sticky border border-gray-300 bg-slate-100 shadow-md">
             <div className="flex items-center space-x-3 ">
                 <label className="sr-only" htmlFor="title">Title:{" "}</label>
                 <Avatar shadow />
@@ -67,6 +105,7 @@ const Post = () => {
                 <input
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, title: e.target.value })}
                     disabled={!session}
+                    required
                     className="p-2 pl-5 focus:border shadow-md border-blue-600 flex flex-1 rounded-md outline-none bg-gray-50"
                     type="text"
                     value={form.title}
@@ -98,7 +137,7 @@ const Post = () => {
                     </div>
                 </div>
 
-                <div className='relative group w-fit flex'>
+                <div onClick={() => setHaveTags(true)} className='relative group w-fit flex'>
                     <BsLink45Deg className="icon group  " />
                     <div className="absolute bg-white group-hover:flex text-center transition-all shadow-md hidden rounded-md top-[-45px] right-[30px] p-1 z-[400]">
                         <p className="text-gray-700 text-sm p-1 w-[50px] h-[50px]">Add tags</p>
@@ -108,10 +147,29 @@ const Post = () => {
             </div>
             {form.title && (
                 <>
+                    {haveTags && (
+                        <div className="flex flex-row items-center space-y-2">
+                            <label className="mr-5 font-bold text-lg" htmlFor="tags">Tags:{" "}</label>
+                            <input
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, tags: e.target.value })}
+                                disabled={!session}
+                                required
+                                className="p-2 pl-5 focus:border shadow-md border-blue-600 flex flex-1 rounded-md outline-none bg-gray-50"
+                                type="text"
+                                value={form.tags}
+                                id="tags"
+                                placeholder={`${session
+                                    ? "Add tags"
+                                    : "Sing in to create a post"}
+                                    `} />
+                            <AiOutlineClose onClick={() => setHaveTags(false)} className='icon mx-7' />
+                        </div>
+                    )}
                     <div className="flex items-center mt-4 px-8 ">
                         <label htmlFor="post" className="sr-only">Post</label>
                         <div className="flex items-center justify-center flex-1">
                             <textarea id="post"
+                                required
                                 value={form.body}
                                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({ ...form, body: e.target.value })}
                                 className="min-h-[40vh] focus:border border-blue-600 shadow-md p-2 flex flex-1 outline-none bg-gray-50  border-0 text-gray-900 rounded-md"
@@ -131,7 +189,6 @@ const Post = () => {
                     </div>
                 </>
             )}
-
         </form>
     )
 }

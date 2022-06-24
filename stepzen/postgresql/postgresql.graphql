@@ -24,6 +24,9 @@ type Likes {
   userName: String
 }
 
+"""
+NOTE: tags: unsupported type ARRAY, field omitted
+"""
 type Post {
   body: String
   commentList: [Comment] @materializer(query: "getCommentUsingPost_id")
@@ -148,9 +151,7 @@ type Mutation {
     )
   insertPost(
     image: String!
-    created_at: DateTime!
     body: String!
-    update_at: DateTime!
     title: String!
     userName: String!
   ): Post

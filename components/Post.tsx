@@ -6,8 +6,6 @@ import { BsLink45Deg } from 'react-icons/bs'
 import supabase from '../lib/supabaseClient';
 import { v4 } from 'uuid';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import { INSERT_POST } from '../graphql/mutations';
-import client from '../apollo-client';
 
 interface FormData {
     title: string
@@ -46,42 +44,42 @@ const Post = () => {
             if (image && title && body) {
                 const baseImageUrl = 'https://myfemqoikddiauxrrwoj.supabase.co/storage/v1/object/public/images'
                 const imageUrl = `${session.user?.name}/${v4()}`
-                try {
-                    await supabase.storage.from("images").upload(imageUrl, image)
-                    await client.query({
-                        query: INSERT_POST,
-                        variables: {
-                            title: title,
-                            body: body,
-                            image: `${baseImageUrl}/${imageUrl}`,
-                            tags: form.tags,
-                            userName: session.user?.name
-                        }
-                    })
-                    console.log('success');
-                }
-                catch (error: any) {
-                    console.log(error);
-                    throw new Error(error)
-                }
-                return;
-            }
-            if (title && body) {
-                try {
-                    await client.query({
-                        query: INSERT_POST,
-                        variables: {
-                            title,
-                            body,
-                            image: null,
-                            tags: form.tags,
-                            userName: session.user?.name,
-                        }
-                    })
-                    console.log('success');
-                } catch (error: any) {
-                    console.log(error);
-                }
+            //     try {
+            //         await supabase.storage.from("images").upload(imageUrl, image)
+            //         await client.query({
+            //             query: INSERT_POST,
+            //             variables: {
+            //                 title: title,
+            //                 body: body,
+            //                 image: `${baseImageUrl}/${imageUrl}`,
+            //                 tags: form.tags,
+            //                 userName: session.user?.name
+            //             }
+            //         })
+            //         console.log('success');
+            //     }
+            //     catch (error: any) {
+            //         console.log(error);
+            //         throw new Error(error)
+            //     }
+            //     return;
+            // }
+            // if (title && body) {
+            //     try {
+            //         await client.query({
+            //             query: INSERT_POST,
+            //             variables: {
+            //                 title,
+            //                 body,
+            //                 image: null,
+            //                 tags: form.tags,
+            //                 userName: session.user?.name,
+            //             }
+            //         })
+            //         console.log('success');
+            //     } catch (error: any) {
+            //         console.log(error);
+            //     }
             }
         }
     };

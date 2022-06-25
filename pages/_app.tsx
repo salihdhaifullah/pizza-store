@@ -2,8 +2,6 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
-import { ApolloProvider } from '@apollo/client'
-import client from '../apollo-client'
 import Header from '../components/Header'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
@@ -28,14 +26,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta name="document-class" content="Published" />
       </Head>
 
-      <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <div className="h-screen overflow-x-scroll overflow-y-scroll bg-slate-200">
             <Header />
             <Component {...pageProps} />
           </div>
         </SessionProvider>
-      </ApolloProvider>
     </>
   )
 }

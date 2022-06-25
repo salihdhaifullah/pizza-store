@@ -6,8 +6,8 @@ import { BsLink45Deg } from 'react-icons/bs'
 import supabase from '../lib/supabaseClient';
 import { v4 } from 'uuid';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { INSERT_POST } from '../graphql/mutations';
+import client from '../apollo-client';
 
 interface FormData {
     title: string
@@ -20,8 +20,6 @@ const Post = () => {
     const { data: session } = useSession();
     const FileRef = useRef<HTMLInputElement | null>(null)
     const [haveTags, setHaveTags] = useState(false)
-    const [tagsArray, setTagsArray] = useState<string[]>([])
-    const [post] = useMutation(INSERT_POST)
 
 
     const [form, setForm] = useState<FormData>({
@@ -50,13 +48,14 @@ const Post = () => {
                 const imageUrl = `${session.user?.name}/${v4()}`
                 try {
                     await supabase.storage.from("images").upload(imageUrl, image)
-                    await post({
+                    await client.query({
+                        query: INSERT_POST,
                         variables: {
-                            title,
-                            body,
-                            image: baseImageUrl + '/' + imageUrl,
-                            tags: tagsArray,
-                            userName: session.user?.name,
+                            title: title,
+                            body: body,
+                            image: `${baseImageUrl}/${imageUrl}`,
+                            tags: form.tags,
+                            userName: session.user?.name
                         }
                     })
                     console.log('success');
@@ -69,12 +68,13 @@ const Post = () => {
             }
             if (title && body) {
                 try {
-                    await post({
+                    await client.query({
+                        query: INSERT_POST,
                         variables: {
                             title,
                             body,
                             image: null,
-                            tags: tagsArray,
+                            tags: form.tags,
                             userName: session.user?.name,
                         }
                     })

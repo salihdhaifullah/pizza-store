@@ -3,7 +3,7 @@ import Avatar from './Avatar';
 import { IoImagesOutline } from 'react-icons/io5'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BsLink45Deg } from 'react-icons/bs'
-import supabase from '../lib/supabaseClient';
+import supabase from '../libs/supabase/supabaseClient';
 import { v4 } from 'uuid';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 

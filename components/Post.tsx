@@ -6,6 +6,7 @@ import { BsLink45Deg } from 'react-icons/bs'
 import supabase from '../libs/supabase/supabaseClient';
 import { v4 } from 'uuid';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import prisma from './../libs/prisma/prisma';
 
 interface FormData {
     title: string
@@ -28,6 +29,10 @@ const Post = () => {
     });
 
     const { title, body, image } = form;
+
+    useEffect(() => {
+        console.log(session)
+    }, [session])
 
     useEffect(() => {
         const tags = form.tags.split(' ').filter(tag => tag.length > 0)

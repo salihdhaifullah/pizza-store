@@ -14,19 +14,19 @@ model Post {
   imageUrl  String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   tags      String[]
   comments  Comment[]
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String?   @unique
-  image     String?
-  createdAt DateTime  @default(now())
-  role      Role      @default(USER)
+  id        String     @id @default(uuid())
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  role      Role       @default(USER)
   password  String?
+  singUp    SingUpRole @default(LOCAL)
   posts     Post[]
   comments  Comment[]
 }
@@ -45,4 +45,11 @@ model Comment {
 enum Role {
   USER
   ADMIN
+}
+
+enum SingUpRole {
+  GOOGLE
+  FACEBOOK
+  GITHUB
+  LOCAL
 }

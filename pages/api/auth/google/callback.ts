@@ -20,7 +20,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, next: any) => 
             req,
             res
         })
+
         res.redirect('http://localhost:3000/?auth_success=true');
+    
     })
 }
 

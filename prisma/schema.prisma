@@ -24,9 +24,10 @@ model User {
   id        String     @id @default(uuid())
   email     String     @unique
   createdAt DateTime   @default(now())
+  name      String
   role      Role       @default(USER)
   password  String?
-  singUp    SingUpRole @default(LOCAL)
+  method    SingUp @default(LOCAL)
   posts     Post[]
   comments  Comment[]
 }
@@ -47,9 +48,7 @@ enum Role {
   ADMIN
 }
 
-enum SingUpRole {
-  GOOGLE
-  FACEBOOK
-  GITHUB
+enum SingUp {
+  PROVIDER  
   LOCAL
 }

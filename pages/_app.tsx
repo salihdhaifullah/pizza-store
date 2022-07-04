@@ -3,8 +3,16 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { SessionProvider } from 'next-auth/react'
 import Header from '../components/Header'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const queryClient = new QueryClient()
   return (
     <>
 
@@ -25,13 +33,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta name="rating" content="general" />
         <meta name="document-class" content="Published" />
       </Head>
-
+      <QueryClientProvider client={queryClient}>
         <SessionProvider session={session}>
           <div className="h-screen overflow-x-scroll overflow-y-scroll bg-slate-200">
             <Header />
             <Component {...pageProps} />
           </div>
         </SessionProvider>
+      </QueryClientProvider>
     </>
   )
 }

@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import Avatar from './Avatar';
 import { IoImagesOutline } from 'react-icons/io5'
 import { AiOutlineClose } from 'react-icons/ai'
@@ -16,7 +15,7 @@ interface FormData {
 }
 
 const Post = () => {
-    const { data: session } = useSession();
+    const { data: session } = null as any;
     const FileRef = useRef<HTMLInputElement | null>(null)
     const [haveTags, setHaveTags] = useState(false)
 

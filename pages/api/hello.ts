@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-const hello = (req: NextApiRequest, res: NextApiResponse) => {
-    res.send('<h1>Hello World</h1>');
+import { getCookie } from "cookies-next";
+const hello = async (req: NextApiRequest, res: NextApiResponse) => {
+    const cookie = await getCookie('session', { req, res });
+    res.send(`<h1>Hello World</h1>
+    <p>cookie: ${cookie}</p>`);
 }
 
 export default hello;

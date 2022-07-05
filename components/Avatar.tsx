@@ -1,6 +1,5 @@
 import Image from 'next/Image'
 import React from 'react'
-import { useSession } from 'next-auth/react';
 
 interface Props {
     seed?: string
@@ -8,7 +7,7 @@ interface Props {
     shadow?: boolean
 }
 const Avatar = ({seed, large, shadow}: Props) => {
-    const { data: session } = useSession()
+    const { data: session } = null as any
     return (
         <div className={`overflow-hidden relative h-10 w-10 rounded-full ${shadow && "shadow-md"} border-gary-300 border bg-white ${large && "w-20 h-20"}`}>
             <Image

@@ -1,12 +1,11 @@
 import Image from 'next/Image';
-import { signIn, useSession, signOut } from 'next-auth/react'
 import { FaHome } from 'react-icons/fa';
 import { VscChevronDown } from 'react-icons/vsc'
 import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai'
 import Avatar from './Avatar';
 
 const Header = () => {
-    const { data: session } = useSession()
+    const session: any = false;
     return (
         <div className="bg-white shadow-sm sm:px-4 px-2 py-2 sticky top-0">
             <ul className="flex">
@@ -43,7 +42,7 @@ const Header = () => {
                         <Avatar />
                         <div className="flex-1 text-xs">
                             <p>{session?.user?.name}</p>
-                            <p onClick={() => signOut()} className='text-gray-400 cursor-pointer hidden lg:flex'>Sign Out</p>
+                            <p className='text-gray-400 cursor-pointer hidden lg:flex'>Sign Out</p>
                         </div>
                         <VscChevronDown className="icon" />
                     </li>
@@ -52,7 +51,7 @@ const Header = () => {
                         <div className="h-9 relative w-9 flex-shrink-0">
                             <Image className="object-contain" layout='fill' src="https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=022" alt="doge" />
                         </div>
-                        <p onClick={() => signIn()} className='text-gray-400 cursor-pointer hidden lg:flex'>Sing In</p>
+                        <p className='text-gray-400 cursor-pointer hidden lg:flex'>Sing In</p>
                     </li>
                 )}
             </ul>

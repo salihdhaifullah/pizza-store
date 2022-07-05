@@ -2,7 +2,7 @@ import prisma from '../../../libs/prisma/prisma';
 import jwt from 'jsonwebtoken';
 import { compareSync } from 'bcryptjs';
 import { NextApiRequest, NextApiResponse } from 'next';
-
+import { setCookie } from 'cookies-next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password, method } = req.body as any;
@@ -18,15 +18,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 else {
                     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '2h' });
 
-                    res.setHeader("set-cookie", `token=${token}; path=/; samesite=lax; httponly; ${process.env.NODE_ENV === 'production' ? 'secure;' : ''} expires=${new Date(Date.now() + 1000 * 60 * 60 * 2).toUTCString()}; max-age=${1000 * 60 * 60 * 2};`);
+
+                    setCookie("token", token, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                        sameSite: "strict",
+                        maxAge: 1000 * 60 * 60 * 2,
+                        expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
+                        path: "/",
+                        req,
+                        res
+                    })
 
                     return res.status(200).json({ user, massage: "login success" })
                 }
             } else if (method && email && user.method !== "LOCAL") {
                 const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '2h' });
 
-                res.setHeader("set-cookie", `token=${token}; path=/; samesite=lax; httponly; ${process.env.NODE_ENV === 'production' ? 'secure;' : ''} expires=${new Date(Date.now() + 1000 * 60 * 60 * 2).toUTCString()}; max-age=${1000 * 60 * 60 * 2};`);
-
+                setCookie("token", token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict",
+                    maxAge: 1000 * 60 * 60 * 2,
+                    expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
+                    path: "/",
+                    req,
+                    res
+                })
+                
                 return res.status(200).json({ user, massage: "login success" })
 
             }

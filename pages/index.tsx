@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import Post from '../components/Post'
+import HomeComponents from '../components/HomeComponents'
 
 const Home: NextPage = () => {
   return (
-    <div className="max-w-5xl my-7 mx-auto">
-        <Post />
+    <div>
+      <HomeComponents />
     </div>
   )
 }

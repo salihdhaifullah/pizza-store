@@ -15,7 +15,7 @@ interface FormData {
 }
 
 const Post = () => {
-    const { data: session } = null as any;
+    const session  = null;
     const FileRef = useRef<HTMLInputElement | null>(null)
     const [haveTags, setHaveTags] = useState(false)
 
@@ -46,8 +46,8 @@ const Post = () => {
         if (session) {
             e.preventDefault();
             if (image && title && body) {
-                const baseImageUrl = 'https://myfemqoikddiauxrrwoj.supabase.co/storage/v1/object/public/images'
-                const imageUrl = `${session.user?.name}/${v4()}`
+                // const baseImageUrl = 'https://myfemqoikddiauxrrwoj.supabase.co/storage/v1/object/public/images'
+                // const imageUrl = `${session.user?.name}/${v4()}`
             //     try {
             //         await supabase.storage.from("images").upload(imageUrl, image)
             //         await client.query({

@@ -1,62 +1,82 @@
-import Image from 'next/Image';
-import { FaHome } from 'react-icons/fa';
-import { VscChevronDown } from 'react-icons/vsc'
-import { AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai'
-import Avatar from './Avatar';
+import { useState } from 'react';
+import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, Button } from '@mui/material';
+import { FiMenu } from 'react-icons/fi'
 
-const Header = () => {
-    const session: any = false;
+interface Props {
+    window?: () => Window;
+}
+
+const navItems = ['Home', 'About', 'Contact'];
+
+const Header = ({ window }: Props) => {
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const container = window !== undefined ? () => window().document.body : undefined
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen)
+    }
+
     return (
-        <div className="bg-white shadow-sm sm:px-4 px-2 py-2 sticky top-0">
-            <ul className="flex">
+        <>
+            <Box component="nav" className="">
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{ keepMounted: true }}
+                    className='sm:hidden flex'
+                >
+                    <Box className='w-[240px] text-center bg-black text-white min-h-screen' onClick={handleDrawerToggle}>
+                        <Typography variant="h6" className=" m-2 ">
+                            LA CARAVANA
+                        </Typography>
+                        <Divider />
+                        <List>
+                            {navItems.map((item) => (
+                                <ListItem key={item} disablePadding>
+                                    <ListItemButton className="text-center hover:bg-gray-700 transition-all rounded-md">
+                                        <ListItemText primary={item} />
+                                    </ListItemButton>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                </Drawer>
+            </Box>
 
-                <li className="w-10 h-10 flex flex-shrink-0 cursor-pointer relative">
-                    <Image layout='fill' className="object-contain" src="https://i.redd.it/520csmznemr81.png" alt="logo" />
-                </li>
+            <AppBar component="nav" className="sticky bg-black text-white">
+                <Toolbar>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        className="flex-1 flex text-[20px] lg:text-[30px]"
+                    >
+                        LA CARAVANA
+                    </Typography>
 
-                <li className='mx-7 sm:flex hidden items-center xl:min-w-[300px]'>
-                    <FaHome className="icon" />
-                    <p className="ml-2 hidden flex-1 lg:inline-flex">Home</p>
-                    <VscChevronDown className="icon" />
-                </li>
+                    <IconButton
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className="flex sm:hidden text-inherit items-center"
+                    >
+                        <FiMenu />
+                    </IconButton>
 
-                <li className="flex flex-1 items-center space-x-2 px-2 ml-2 border-gray-200 border rounded-lg sm:py-2.5 py-1.5 bg-gray-50">
-                    <form className="flex items-center flex-1">
-                        <AiOutlineSearch className="h-6 w-6 text-gray-400" />
-                        <input type="text" className="outline-none flex flex-1 bg-transparent" placeholder="Search" />
-                        <button type="submit" hidden />
-                    </form>
-                </li>
-
-                <li className="items-center lg:flex hidden mx-5 space-x-2 text-gray-500">
-                    <VscChevronDown className="icon" />
-                    <VscChevronDown className="icon" />
-                </li>
-
-                <li className="flex items-center ml-2 sm:ml-4 lg:hidden">
-                    <AiOutlineMenu className="icon" />
-                </li>
-
-                {session ? (
-                    <li className="hidden items-center space-x-2 lg:flex">
-                        <Avatar />
-                        <div className="flex-1 text-xs">
-                            <p>{session?.user?.name}</p>
-                            <p className='text-gray-400 cursor-pointer hidden lg:flex'>Sign Out</p>
-                        </div>
-                        <VscChevronDown className="icon" />
-                    </li>
-                ) : (
-                    <li className="hidden  items-center space-x-2 lg:flex">
-                        <div className="h-9 relative w-9 flex-shrink-0">
-                            <Image className="object-contain" layout='fill' src="https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=022" alt="doge" />
-                        </div>
-                        <p className='text-gray-400 cursor-pointer hidden lg:flex'>Sing In</p>
-                    </li>
-                )}
-            </ul>
-        </div>
-    )
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}
+                        className=" hidden  sm:block"
+                    >
+                        {navItems.map((item) => (
+                            <Button key={item} className="text-[#fff]">
+                                {item}
+                            </Button>
+                        ))}
+                    </Box>
+                </Toolbar>
+            </AppBar>
+        </>
+    );
 }
 
 export default Header

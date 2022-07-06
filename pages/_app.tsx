@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Link from 'next/link'
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from 'react-query'
+import { StyledEngineProvider } from '@mui/material'
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const queryClient = new QueryClient()
@@ -29,11 +30,13 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <meta name="document-class" content="Published" />
       </Head>
       <QueryClientProvider client={queryClient}>
-          <div className="h-screen overflow-x-scroll overflow-y-scroll bg-slate-200">
-            {/* <Header /> */}
-            <Link href="/api/auth/google"><a>google</a></Link>
-            {/* <Component {...pageProps} /> */}
+        <StyledEngineProvider injectFirst>
+          <div>
+            <Header/>
+            <Component {...pageProps} />
           </div>
+        </StyledEngineProvider>
+
       </QueryClientProvider>
     </>
   )

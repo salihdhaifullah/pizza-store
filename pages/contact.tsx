@@ -63,11 +63,11 @@ const Contact: NextPage = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <FcFeedback />
+          <Avatar className="bg-[#9c27b0] w-auto h-auto p-4 rounded-full m-1">
+            <FcFeedback className="text-6xl"/>
           </Avatar>
-          <Typography component="h1" className="text-white" variant="h5">
-            Send Us a Feedback
+          <Typography component="h1" className="text-white" variant="h3">
+            Send to Us a Feedback
           </Typography>
           <Box
             component="form"
@@ -100,14 +100,13 @@ const Contact: NextPage = () => {
               <div className="">
                 <label
                   htmlFor="comment"
-                  className="text-lg text-center flex items-center justify-center w-full text-gray-600"
+                  className="text-2xl mb-4 text-center flex items-center justify-center w-full text-gray-600"
                 >
-                  Add a comment
+                  Add your Feedback
                 </label>
-                <hr />
                 <textarea
                   className="w-full  min-h-[35vh] p-2 border rounded focus:outline-none focus:ring-blue-600 focus:ring-1"
-                  placeholder="Comment"
+                  placeholder="Feedback"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 ></textarea>
@@ -117,7 +116,7 @@ const Contact: NextPage = () => {
             <div className="flex justify-around w-full item-center">
               {isLoading ? (
                 <Button
-                  className="px-3 py-2 text-lg text-blue-100 bg-blue-600 rounded drop-shadow-md
+                  className="px-3 py-2 text-2xl text-blue-100 bg-blue-600 rounded drop-shadow-md
                                         hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
                   type="submit"
                   disabled
@@ -129,17 +128,17 @@ const Contact: NextPage = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  className="px-3 py-2 text-lg text-blue-100 bg-blue-600 rounded drop-shadow-md
+                  className="px-3 py-2 text-2xl text-blue-100 bg-blue-600 rounded drop-shadow-md
                                             hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
                 >
-                  Comment
+                  Send
                 </Button>
               )}
 
               <Button
                 onClick={handelCansel}
                 variant="contained"
-                className="px-3 py-2 text-sm text-blue-600 border border-blue-500 drop-shadow-md 
+                className="px-3 py-2 text-2xl text-blue-600 border border-blue-500 drop-shadow-md 
                                         hover:bg-blue-600 hover:drop-shadow-2xl hover:text-white hover:rounded-3xl transition-all duration-[130ms] ease-in-out"
               >
                 Cancel

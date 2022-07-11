@@ -6,16 +6,16 @@ import mapImage from "../public/images/image 1.png"
 
 const FindUs = () => {
   return (
-    <div className="w-full relative flex justify-evenly flex-col">
+    <div className="w-full relative mb-60 flex justify-evenly flex-col">
       <div className="w-full flex justify-center flex-col items-center">
         <Typography
           variant="h2"
-          className="text-[28px]  md:text-[38px] justify-center  flex w-full items-center"
+          className="justify-center flex-col flex w-full items-center"
           component="h1"
         >
           FIND US
+          <span className="h-2 flex w-[calc(25%)] mb-10 rounded-md bg-yellow-600"></span>
         </Typography>
-        <span className="h-1 flex w-60 mb-20 rounded-md bg-yellow-600"></span>
       </div>
       <div className="w-full h-auto grid gap-10 p-20 grid-cols-1 md:grid-cols-2">
         <div className="flex w-full items-center flex-col relative">
@@ -24,13 +24,21 @@ const FindUs = () => {
         <div className='flex w-full items-center flex-col'>
           <Typography
             variant="h4"
-            className="text-[18px] h-full md:text-[28px] flex
+            className="text-[18px] h-full md:text-[28px] text-start flex
           w-full items-center justify-center">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            <br />
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            <br />
+            ever since the 1500s.
+            <br />
+            <br />
             <br />
             <br />
             ATTENDANCE
             Monday to Sunday  12:00pm - 8:00pm
+            <br />
+            <br />
             <br />
             <br />
             DELIVERY

@@ -8,7 +8,7 @@ const Footer = () => {
     const YearNew = new Date().getFullYear()
     return (
         <>
-            <div className="container bg-hero object-cover grid-rows-2 h-[100vh] w-full">
+            <div className="container bg-hero object-fill grid-rows-2 h-[100vh] w-[100vw]">
                 <Image src={pizzaDown} alt="map" className="object-contin w-full  md:w-auto abslout" />
                 <div className="w-full mb-40">
                     <div className="w-full flex justify-center items-center">

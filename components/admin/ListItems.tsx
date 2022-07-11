@@ -1,8 +1,4 @@
-import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+import { ListItemText, ListSubheader,  ListItemIcon, ListItemButton} from '@mui/material';
 
 import { MdOutlineAssignmentInd, MdOutlineDashboardCustomize, MdAddShoppingCart } from 'react-icons/md';
 import { BsFillPeopleFill } from 'react-icons/bs';
@@ -10,7 +6,7 @@ import { AiOutlineBarChart } from 'react-icons/ai';
 import { IoLayers } from 'react-icons/io5';
 
 export const mainListItems = (
-    <React.Fragment>
+    <>
         <ListItemButton>
             <ListItemIcon>
                 <MdOutlineDashboardCustomize />
@@ -41,11 +37,11 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Integrations" />
         </ListItemButton>
-    </React.Fragment>
+    </>
 );
 
 export const secondaryListItems = (
-    <React.Fragment>
+    <>
         <ListSubheader component="div" inset>
             Saved reports
         </ListSubheader>
@@ -67,5 +63,5 @@ export const secondaryListItems = (
             </ListItemIcon>
             <ListItemText primary="Year-end sale" />
         </ListItemButton>
-    </React.Fragment>
+    </>
 );

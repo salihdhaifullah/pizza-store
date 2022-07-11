@@ -1,10 +1,5 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { MouseEvent } from 'react';
+import { Link, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Title from './Title';
 
 // Generate Order Data
@@ -55,13 +50,13 @@ const rows = [
   ),
 ];
 
-const preventDefault = (event: React.MouseEvent) => {
+const preventDefault = (event: MouseEvent) => {
   event.preventDefault();
 }
 
 const Orders = () => {
   return (
-    <React.Fragment>
+    <>
       <Title>Recent Orders</Title>
       <Table size="small">
         <TableHead>
@@ -88,7 +83,7 @@ const Orders = () => {
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         See more orders
       </Link>
-    </React.Fragment>
+    </>
   );
 }
 

@@ -16,7 +16,8 @@
 /build
 
 # misc
-
+/.vscode
+/package-lock.json
 .DS_Store
 *.pem
 

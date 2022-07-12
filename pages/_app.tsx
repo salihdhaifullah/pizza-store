@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from 'react-query'
 import { StyledEngineProvider } from '@mui/material'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const queryClient = new QueryClient()
@@ -30,7 +31,8 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <StyledEngineProvider injectFirst>
-            <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen /> 
+          <Component {...pageProps} />
         </StyledEngineProvider>
 
       </QueryClientProvider>

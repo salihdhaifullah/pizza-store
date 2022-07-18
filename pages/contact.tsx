@@ -1,6 +1,5 @@
 import { FormEvent, useState } from "react";
 import type { NextPage } from "next";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Avatar,
   Button,
@@ -14,27 +13,7 @@ import {
 } from "@mui/material";
 import { FcFeedback } from "react-icons/fc";
 import Header from "../components/Header";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-    className="text-center items-center text-white"
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
+import Copyright from "../components/Copyright";
 
 const Contact: NextPage = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -49,22 +28,16 @@ const Contact: NextPage = () => {
   const [comment, setComment] = useState("");
 
   const isLoading = false;
-  const handelCansel = () => {};
+  const handelCancel = () => { };
   return (
     <div className="w-full -mb-10 h-auto min-h-[70vh] bg-gray-900">
       <Header />
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+          className="flex flex-col items-center mt-4">
           <Avatar className="bg-[#9c27b0] w-auto h-auto p-4 rounded-full m-1">
-            <FcFeedback className="text-6xl"/>
+            <FcFeedback className="text-6xl" />
           </Avatar>
           <Typography component="h1" className="text-white" variant="h3">
             Send to Us a Feedback
@@ -97,7 +70,7 @@ const Contact: NextPage = () => {
               className="text-lg"
             />
             <div className="w-full mt-[5vh] mb-[5vh] rounded-lg">
-              <div className="">
+              <div>
                 <label
                   htmlFor="comment"
                   className="text-2xl mb-4 text-center flex items-center justify-center w-full text-gray-600"
@@ -117,7 +90,7 @@ const Contact: NextPage = () => {
               {isLoading ? (
                 <Button
                   className="px-3 py-2 text-2xl text-blue-100 bg-blue-600 rounded drop-shadow-md
-                                        hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
+                hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
                   type="submit"
                   disabled
                   variant="contained"
@@ -129,24 +102,27 @@ const Contact: NextPage = () => {
                   type="submit"
                   variant="contained"
                   className="px-3 py-2 text-2xl text-blue-100 bg-blue-600 rounded drop-shadow-md
-                                            hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
+                hover:bg-white hover:drop-shadow-2xl hover:text-blue-600 hover:rounded-3xl hover:border hover:border-blue-600 transition-all duration-[130ms] ease-in-out"
                 >
                   Send
                 </Button>
               )}
 
               <Button
-                onClick={handelCansel}
+                onClick={handelCancel}
                 variant="contained"
                 className="px-3 py-2 text-2xl text-blue-600 border border-blue-500 drop-shadow-md 
-                                        hover:bg-blue-600 hover:drop-shadow-2xl hover:text-white hover:rounded-3xl transition-all duration-[130ms] ease-in-out"
+              hover:bg-blue-600 hover:drop-shadow-2xl hover:text-white hover:rounded-3xl transition-all duration-[130ms] ease-in-out"
               >
                 Cancel
               </Button>
             </div>
+
           </Box>
+          <div className="m-0 p-0 text-white">
+              <Copyright />
+            </div>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </div>
   );

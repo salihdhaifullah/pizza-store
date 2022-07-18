@@ -7,26 +7,22 @@ const Menu = () => {
   return (
     <div className="w-full justify-center mb-20 items-center flex flex-col text-center">
       <Typography
-        variant="h2"
+        variant="h4"
         component="h1"
-        className="justify-center flex-col flex w-full items-center"
+        className="justify-center md:text-5xl flex-col flex w-full items-center"
       >
         OUR MENU
-        <span className="h-2 flex w-[calc(25%)] mb-4 rounded-md bg-yellow-600"></span>
+        <span className="h-1 flex w-[calc(50%)] md:w-[calc(30%)] mb-4 rounded-md bg-yellow-600"></span>
       </Typography>
-      <Typography component="p" variant="h5" className="mb-10">
+      <Typography component="p" variant="h5" className="md:text-2xl text-xl px-5 mb-10">
         Lorem Ipsum is simply dummy text of the printing and typesetting
         industry. Lorem
-        <br />
-        Ipsum has been the industry's standard dummy text ever since the 1500s,
+        Ipsum has been the industry&apos;s standard dummy text ever since the 1500s,
         when an
-        <br />
         unknown printer took a galley of type and scrambled it to make a type
         specimen
-        <br />
         book. It has survived not only five centuries, but also the leap into
         electronic
-        <br />
         typesetting, remaining essentially unchanged.
       </Typography>
       <div className="grid w-full gap-10 p-20 grid-cols-1 md:grid-cols-2">

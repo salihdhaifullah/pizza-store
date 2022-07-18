@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import type { NextPage } from "next";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Link from "next/link";
 import {
   Avatar,
   Button,
@@ -13,27 +13,10 @@ import {
 } from "@mui/material";
 import { AiOutlineLock } from "react-icons/ai";
 import Header from "../components/Header";
-import Link from "next/link";
+import Copyright from "../components/Copyright";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link href="https://mui.com/">
-        <a className="text-blue-600 hover:underline">Your Website</a>
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
+
 
 const SignIn: NextPage = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -46,10 +29,9 @@ const SignIn: NextPage = () => {
   };
 
   return (
-    <>
+    <div className="w-full -mb-10 h-auto min-h-[100vh] bg-gray-900">
       <Header />
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="md">
+        <Container component="main" className="shadow-2xl pt-[1px] flex -mb-[5vh] flex-col bg-white mt-10 rounded-lg" maxWidth="sm">
           <CssBaseline />
           <Box
             sx={{
@@ -163,10 +145,9 @@ const SignIn: NextPage = () => {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
+          <Copyright />
         </Container>
-      </ThemeProvider>
-    </>
+    </div>
   );
 };
 
